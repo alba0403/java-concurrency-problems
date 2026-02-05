@@ -4,23 +4,38 @@ import java.util.List;
 public class Esdeveniment {
     //atributs
     private int placesDisponibles = 5;
-    // creem una llista de tots els assistents
-    List<Assistent> llistaAssistents = new ArrayList<Assistent>();
+    private List<Assistent> llistaAssistents = new ArrayList<Assistent>();  // creem una llista de tots els assistents
 
     // constructor
-    public Esdeveniment(){
-
+    public Esdeveniment(int placesMax){
+        this.placesDisponibles = placesMax;
+        this.llistaAssistents = new ArrayList<>();
     }
 
 
-    public void ferReserva(Assistent assistent){
-        if (llistaAssistents.size() < 5){   //si la llista de reserves no es plena, que afegeixi
-            llistaAssistents.add(assistent);
-            placesDisponibles --;
+    public synchronized  void ferReserva(Assistent assistent) {
+        while (placesDisponibles == 0) {    //si no hi han places
+            try {
+                wait();
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
         }
+        //si hi han places
+        llistaAssistents.add(assistent);
+        placesDisponibles--;
+        System.out.println(assistent.getName() + " ha fet una reserva. Places disponibles: " + placesDisponibles);
     }
 
-    public void cancelaReserva(Assistent assistent) {
-        if ()
+    public synchronized void cancelaReserva(Assistent assistent) {
+        if (llistaAssistents.contains(assistent)) {
+            llistaAssistents.remove(assistent);
+            placesDisponibles++;
+            System.out.println(assistent.getName() + " ha cancel·lat una reserva. Places disponibles: " + placesDisponibles);
+
+            notifyAll();    //avisem als altres fils per a que competeixin entre ells
+        } else {
+            System.out.println(assistent.getName() + " no ha pogut cancel·lar una reserva inexistent. Places disponibles: " + placesDisponibles);
+        }
     }
 }
