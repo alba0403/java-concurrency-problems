@@ -1,11 +1,42 @@
 public class Taula {
-  // creem els filosofs
 
-  // creem les forquilles
+  private Filosof[] comensals = new Filosof[4];
+  private Forquilla[] forquilles = new Forquilla[4];
 
   // constructor on assignem a cada filosof les seves dos forquilles correctes
+  public Taula(){
+    for(int i = 0; i < 4; i++){
+      forquilles[i] = new Forquilla(i);
+    }
 
-  // metode cridarTaula on iniciem els fils
+    for(int j = 0; j < 4; j++){
+      comensals[j] = new Filosof("fil"+j, forquilles[j],              //forquilla esquerra -- j=0 -> fil0 -> esq0
+                                          forquilles[(j + 1) % 4],    //forquilla dreta -- j=0 -> fil0 -> dret1
+                                          0);
+    }
+  }
 
-  // metode pricipal que mostra la taula i crida a taula
+  // associem els fils amb les seves forquilles
+  public void showTaula(){
+    for(int i = 0; i < comensals.length; i++){
+      System.out.printf("Comensals: %s esq:%d dret:%d \n", comensals[i].getName(), 
+                                                                  comensals[i].getForquillaEsquerra().getNumero(), 
+                                                                  comensals[i].getForquillaDreta().getNumero());
+    }
+  }
+  
+  
+  public void cridarATaula(){
+    for(int i = 0; i < comensals.length; i++){
+      comensals[i].start();                           // mètode on iniciem els fils
+    }
+  }
+
+  public static void main(String[] args) {
+    
+    Taula taula = new Taula();
+
+    taula.showTaula();
+    taula.cridarATaula();
+  }
 }
