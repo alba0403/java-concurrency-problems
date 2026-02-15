@@ -1,6 +1,5 @@
 public class Forquilla {
   // atributs
-  private boolean enUs;     //true -> forquilla ocupada  ;  false -> forquilla libre
   private int numero;
   private int propietari;
   private final int LLIURE = -1;
@@ -8,11 +7,10 @@ public class Forquilla {
   // constructor
   public Forquilla(int numero){
     setNumero(numero);
+    setPropietari(LLIURE);                                                      // al inici sempre es creen lliures
   }
 
   // getters
-  public boolean isEnUs(){ return enUs; }
-
   public int getNumero(){ return numero; }
 
   public int getPropietari(){ return propietari; }
@@ -20,15 +18,11 @@ public class Forquilla {
   public int getLliure(){ return LLIURE; }
 
   // setters
-  public void setEnUs(boolean enUs){
-    this.enUs = enUs;
-  }
-
   public void setNumero(int numero){
     this.numero = numero;
   }
 
-  public void setPropietari(){
+  public void setPropietari(int propietari){
     this.propietari = propietari;
   }
 }

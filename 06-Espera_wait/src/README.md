@@ -62,6 +62,7 @@ exemple del resultat:
 ![alt text](image-1.png)
 
 El resultat es que les reserves es produeixen més lentament i també es produeixen molts intents de cancela sense tindre reserva.
+
 --- 
 
 ### 3. Per què calen llistes en lloc d'una simple variable sencera?
