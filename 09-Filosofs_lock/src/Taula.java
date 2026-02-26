@@ -11,10 +11,8 @@ public class Taula {
     }
 
     for(int j = 0; j < comensals.length; j++){
-      comensals[j] = new Filosof("fil"+j, forquilles[j],                             //forquilla esquerra -- j=0 -> fil0 -> esq0
-                                          forquilles[(j + 1) % comensals.length],    //forquilla dreta -- j=0 -> fil0 -> dret1
-                                          0,
-                                          j);
+      comensals[j] = new Filosof("Fil"+j, forquilles[j],                             //forquilla esquerra -- j=0 -> fil0 -> esq0
+                                          forquilles[(j + 1) % comensals.length]);    //forquilla dreta -- j=0 -> fil0 -> dret1
     }
   }
 
