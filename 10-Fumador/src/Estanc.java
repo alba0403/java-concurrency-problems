@@ -1,7 +1,7 @@
 import java.util.ArrayList;
 import java.util.List;
 
-public class Estanc {
+public class Estanc extends Thread{
   // Llistes
   private List<Tabac> llistaTabac;
   private List<Paper> llistaPaper;
@@ -13,9 +13,10 @@ public class Estanc {
     this.llistaTabac = new ArrayList<>();
     this.llistaPaper = new ArrayList<>();
     this.llistaLlumi = new ArrayList<>();
+    this.obert = true;
   }
 
-  public void nouSubministrament(){
+  public synchronized void nouSubministrament(){
     double numRndom = Math.random();
 
     if(numRndom < 0.33){
@@ -27,47 +28,61 @@ public class Estanc {
     }
   }
 
-  public void addTabac(){
+  public synchronized void addTabac(){
     llistaTabac.add(new Tabac());
     System.out.println("Afegint Tabac");
     notifyAll();
   }
 
-  public void addLlumi(){
+  public synchronized void addLlumi(){
     llistaLlumi.add(new Llumi());
-    System.out.println("Afegint LlumÃ");
+    System.out.println("Afegint Llumí");
     notifyAll();
   }
 
-  public void addPaper(){
+  public synchronized void addPaper(){
     llistaPaper.add(new Paper());
     System.out.println("Afegint Paper");
     notifyAll();
   }
 
   private synchronized <Producte> Producte venProducte(List<Producte> llista) throws InterruptedException {
-        while (llista.isEmpty() && obert) {
-            wait();
-        }
-        if (!llista.isEmpty()) {
-            return llista.remove(0);
-        }
-        return null;
-    }
+      while (llista.isEmpty() && obert) {
+          wait();
+      }
+      if (!llista.isEmpty()) {
+          return llista.remove(0);
+      }
+      return null;
+  }
 
-    public Tabac venTabac() throws InterruptedException {
-        return venProducte(llistaTabac);
-    }
-    public Paper venPaper() throws InterruptedException {
-        return venProducte(llistaPaper);
-    }
-    public Llumi venLlumi() throws InterruptedException {
-        return venProducte(llistaLlumi);
-    }
+  public synchronized Tabac venTabac() throws InterruptedException {
+      return venProducte(llistaTabac);
+  }
+  public synchronized Paper venPaper() throws InterruptedException {
+      return venProducte(llistaPaper);
+  }
+  public synchronized Llumi venLlumi() throws InterruptedException {
+      return venProducte(llistaLlumi);
+  }
 
-    public synchronized void tancarEstanc() {
-        obert = false;
-        System.out.println("Estanc tancat");
-        notifyAll();
+  public synchronized void tancarEstanc() {
+      obert = false;
+      System.out.println("Estanc tancat");
+      notifyAll();
+  }
+
+  @Override
+  public void run() {
+    System.out.println("Estanc obert");
+    while (obert) {
+      nouSubministrament();
+      try {
+        int esperar = 500 + (int)(Math.random() * 1001);      //multiplicar per 1001 fa que generi un nombre entre 0 y 1000
+        Thread.sleep(esperar);
+      } catch (InterruptedException e) {
+        System.err.println(e);
+      }
     }
+  }
 }

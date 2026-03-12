@@ -32,29 +32,30 @@ public class Fumador extends Thread {
     }
 
     public void fuma() throws InterruptedException {
-        if (tabac != null && paper != null && llumi != null) {
-            System.out.println("Fumador " + id + " fumant");
-            tabac = null;
-            paper = null;
-            llumi = null;
-            numFumades++;
-            int espera = 500 + random.nextInt(501);
-            Thread.sleep(espera);
-            System.out.println("Fumador " + id + " ha fumat " + numFumades + " vegades");
-        }
+        System.out.println("Fumador " + id + " fumant");
+        tabac = null;
+        paper = null;
+        llumi = null;
+
+        numFumades++;
+
+        int espera = 500 + random.nextInt(501);                 // fuma entre 0,5 seg i 1 seg
+        Thread.sleep(espera);
+
+        System.out.println("Fumador " + id + " ha fumat " + numFumades + " vegades");
     }
 
     @Override
     public void run() {
         try {
-            while (numFumades < 3) {
+            while (numFumades < 3) {            // Fuma fins a 3 vegades
                 compraTabac();
                 compraPaper();
                 compraLlumi();
                 fuma();
             }
         } catch (InterruptedException e) {
-            Thread.currentThread().interrupt();
+            System.err.println(e);
         }
     }
 }
