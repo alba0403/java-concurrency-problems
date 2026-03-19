@@ -8,5 +8,5 @@ public class Client {
 
   public String getNom(){ return nom; }
 
-  public void tallarseElCabell(){ System.out.printf("Tallant cabell a %s\n", nom); }
+  public void tallarseElCabell(){ System.out.printf("Li toca al client %s \nTallant cabell a %s\n", nom, nom); }
 }

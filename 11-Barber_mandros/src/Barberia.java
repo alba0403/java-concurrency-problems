@@ -25,18 +25,34 @@ public class Barberia extends Thread{
   public void entrarClient(Client client){
     synchronized(condBarber){
       if(salaEspera.size() == numMaximCadires){
-        System.out.printf("No queden cadires, client %s se'n va", client.getNom());
+        System.out.printf("No queden cadires, client %s se'n va\n", client.getNom());
       } else {
         salaEspera.add(client);
-        System.out.printf("Client %s en espera", client.getNom());
+        System.out.printf("Client %s en espera\n", client.getNom());
         condBarber.notify();
       }
     }
   }
 
   public void run(){
-    for(int i = 0; i < 10; i++){
-
+    int nClient = 1;
+    for(int i = 0; i < 2; i++){
+      for(int j = 0; j < 10; j++){
+        try {
+          Client nouClient = new Client(nClient++);
+          entrarClient(nouClient);
+          // interval de 0,5s
+          Thread.sleep(500);
+        } catch (InterruptedException e) {
+          System.err.println(e);
+        }
+      }
+      try {
+        //després de fer entrar 10 clients, esperar 10 segons
+        Thread.sleep(10000);
+      } catch (InterruptedException e) {
+        System.err.println(e);
+      }
     }
 
   }

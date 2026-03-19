@@ -8,10 +8,24 @@ public class Barber extends Thread{
 
   public void run(){
     while(true){
-      if (hi ha clients){
-        //TODO: esperar fisn tenir la classe barberia
+      Client client = Barberia.instancia.seguentClient();
+      if (client != null) {
+        try {
+          int tempsEspera = 900 + (int)(Math.random() * 100);
+          Thread.sleep(tempsEspera);
+        } catch (InterruptedException e) {
+          System.err.println(e);
+        }
+        client.tallarseElCabell();
       } else {
-        System.out.printf("Barber %s dormint\n", nom);
+        try {
+          synchronized(Barberia.instancia.condBarber){
+            System.out.printf("Ningú en espera \nBarber %s dormint\n", nom);
+            Barberia.instancia.condBarber.wait();
+          }
+        } catch (InterruptedException e) {
+          System.err.println(e);
+        }
       }
     }
   }
